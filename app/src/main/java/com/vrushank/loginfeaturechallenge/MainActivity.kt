@@ -15,6 +15,7 @@ import androidx.navigation.compose.rememberNavController
 import com.vrushank.loginfeaturechallenge.domain.useCases.ForgotPassword
 import com.vrushank.loginfeaturechallenge.domain.useCases.LoginUseCase
 import com.vrushank.loginfeaturechallenge.domain.useCases.Logout
+import com.vrushank.loginfeaturechallenge.presentation.ForgotPasswordScreen
 import com.vrushank.loginfeaturechallenge.presentation.LandingScreen
 import com.vrushank.loginfeaturechallenge.presentation.LoginScreen
 import com.vrushank.loginfeaturechallenge.presentation.LoginViewModel
@@ -44,11 +45,11 @@ class MainActivity : ComponentActivity() {
                             vm.uiEvent.collect {
                                 when (it) {
                                     is UiEvent.Success -> navController.navigate("landing_screen")
-
+                                    is UiEvent.ForrgotPassword -> navController.navigate("forgot_password_screen")
                                 }
 
-                                }
                             }
+                        }
 
 
                         LoginScreen(
@@ -60,15 +61,24 @@ class MainActivity : ComponentActivity() {
                             isLoading = uiData.value.isLoading,
                             loginOnClick = {
                                 vm.onLogin(
-                                    uiData.value.email,
-                                    uiData.value.password
+                                    uiData.value.email, uiData.value.password
                                 )
-                            },uiData.value.errorMsg)
+                            },
+                            uiData.value.errorMsg,
+                            onClickForgotPassword = {
+                                vm.forgotPasswordClick()
+                            })
 
                     }
                     composable("landing_screen") {
 
                         LandingScreen()
+                    }
+                    composable("forgot_password_screen") {
+                        ForgotPasswordScreen(
+                            email = "",
+                            onValuesChange = {}
+                        )
                     }
 
                 }

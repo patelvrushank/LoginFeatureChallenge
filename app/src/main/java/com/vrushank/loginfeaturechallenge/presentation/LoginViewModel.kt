@@ -59,6 +59,10 @@ class LoginViewModel(
 
         }
     }
+    fun forgotPasswordClick(){
+        viewModelScope.launch {  _uiEvent.send(UiEvent.ForrgotPassword) }
+
+    }
 
 
     companion object {
@@ -85,5 +89,6 @@ data class LoginDetail(
 
 sealed class UiEvent(){
     object Success: UiEvent()
+    object ForrgotPassword: UiEvent()
 
 }

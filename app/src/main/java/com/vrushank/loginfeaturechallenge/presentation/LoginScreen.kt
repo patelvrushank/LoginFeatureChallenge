@@ -56,14 +56,11 @@ fun LoginScreen(
     isEnable: Boolean,
     isLoading: Boolean,
     loginOnClick: () -> Unit,
-    errorMsg: String?,
+    //errorMsg: String?,
     onClickForgotPassword: () -> Unit
 ) {
     var passwordVisible by remember { mutableStateOf(false) }
-    val context = LocalContext.current
-    LaunchedEffect(errorMsg) {
-        errorMsg.let { Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show() }
-    }
+
     if (isLoading) {
         Box(
             contentAlignment = Alignment.Center,
@@ -104,7 +101,8 @@ fun LoginScreen(
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
             visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
             trailingIcon = {
-                val image = if (passwordVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff
+                val image =
+                    if (passwordVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff
                 val desc = if (passwordVisible) "hide password" else "show password"
                 IconButton(onClick = { passwordVisible = !passwordVisible }) {
                     Icon(imageVector = image, desc)

@@ -5,9 +5,12 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Devices.PIXEL_9_PRO_FOLD
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -21,6 +24,7 @@ import com.vrushank.loginfeaturechallenge.presentation.LoginScreen
 import com.vrushank.loginfeaturechallenge.presentation.LoginViewModel
 import com.vrushank.loginfeaturechallenge.presentation.UiEvent
 import com.vrushank.loginfeaturechallenge.ui.theme.LoginFeatureChallengeTheme
+import kotlinx.coroutines.flow.collect
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,6 +50,7 @@ class MainActivity : ComponentActivity() {
                                 when (it) {
                                     is UiEvent.Success -> navController.navigate("landing_screen")
                                     is UiEvent.ForrgotPassword -> navController.navigate("forgot_password_screen")
+                                    is UiEvent.ShowToast -> Toast.makeText(context,it.msg, Toast.LENGTH_SHORT).show()
                                 }
 
                             }
@@ -64,7 +69,7 @@ class MainActivity : ComponentActivity() {
                                     uiData.value.email, uiData.value.password
                                 )
                             },
-                            uiData.value.errorMsg,
+               //             uiData.value.errorMsg,
                             onClickForgotPassword = {
                                 vm.forgotPasswordClick()
                             })
@@ -76,9 +81,7 @@ class MainActivity : ComponentActivity() {
                     }
                     composable("forgot_password_screen") {
                         ForgotPasswordScreen(
-                            email = "",
-                            onValuesChange = {}
-                        )
+                            email = "", onValuesChange = {})
                     }
 
                 }
@@ -89,9 +92,12 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-/*@Preview(showBackground = true)
+
+/*
+@Preview(showBackground = true, device = PIXEL_9_PRO_FOLD)
 @Composable
 fun LoginScreenPreview() {
+
     val vm: LoginViewModel = viewModel(factory = LoginViewModel.factory())
     val uiData = vm.uiState.collectAsState()
     LoginScreen(
@@ -100,6 +106,10 @@ fun LoginScreenPreview() {
         passValue = uiData.value.password,
         onChangePass = { vm.updatePassword(it) },
         isEnable = uiData.value.email.isNotEmpty() && uiData.value.password.length >= 6,
-        isLoading = uiData.value.isLoading
+        isLoading = uiData.value.isLoading,
+        loginOnClick = { },
+        errorMsg = "",
+        onClickForgotPassword = {  }
     )
-}*/
+}
+*/
